@@ -34,7 +34,11 @@ def calculate_info():
 
 def calculate_entropy():
     global entropy
-    entropy = sum(info.values())
+    sym = frequency.items()
+    r = []
+    for k, v in sym:
+        r.append(info[k] * v)
+    entropy = sum(r)
 
 
 def callback(pkt):
