@@ -25,7 +25,10 @@ def calculate_freq():
     N = sum(S1.values())
     sym = sorted(S1.items(), key=lambda x: -x[1])
     for d, k in sym:
-        frequency[d[1]] = k / N
+        if d[1] in frequency:
+            frequency[d[1]] += k / N
+        else:
+            frequency[d[1]] = k / N
 
 def calculate_info():
     sym = frequency.items()
@@ -70,7 +73,7 @@ if __name__ == '__main__':
         sniff(prn=callback, offline="./input/{}.pcap".format(args.dataset))
     else:
         print("Online")
-        sniff(prn=callback, iface="en0")
+        sniff(prn=callback)
 
     calculate_freq()
     calculate_info()
