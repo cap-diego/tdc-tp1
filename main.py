@@ -6,8 +6,12 @@ S1 = {}
 frequency = {}
 info = {}
 entropy = None
+broad_unicast = {
+    "BROADCAST": 0,
+    "UNICAST": 0
+}
 
-# Source: IEEE 802
+# Source: https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml
 get_eth_desc = {
     "2048": "IPV4",
     "2054": "ARP",
@@ -45,14 +49,17 @@ def calculate_entropy():
 
 
 def callback(pkt):
+    # https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
+    # Para IPv4 (RFC791) proto identifica el siguiente nivel de protocolo (pkt.payload.proto)
+        # Para IPv6 (RFC8200) el campo es Next Header (pkt.payload.nh)
+
     if pkt.haslayer(Ether):
         addr = "BROADCAST" if pkt[Ether].dst == "ff:ff:ff:ff:ff:ff" else "UNICAST"
         prot = pkt[Ether].type
         prot_desc = get_eth_desc.get(str(prot), prot)
         s_i = (addr, prot_desc)
 
-        if prot_desc not in ["IPV4", "ARP", "IPV6"]:
-            print(prot_desc)
+        broad_unicast[addr] += 1
 
         if s_i not in S1:
             S1[s_i] = 0.0
@@ -82,7 +89,11 @@ if __name__ == '__main__':
     print(S1)
     print("Freq: {}\n".format(frequency))
     print("Info: {}\n".format(info))
+    print("Broadcast/Unicast: {}\n".format(broad_unicast))
     print("Entropy: {}\n".format(entropy))
+
+    if args.dataset is None:
+        exit(0)
 
     print("Escribiendo resultados")
 
@@ -102,3 +113,9 @@ if __name__ == '__main__':
         writer = csv.writer(f)
         writer.writerow(["dataset", "value"])
         writer.writerow([args.dataset, entropy])
+
+    with open('./results/{}_broadcast_unicast.csv'.format(args.dataset), 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(["type", "value"])
+        for k, v in broad_unicast.items():
+            writer.writerow([k, v])
