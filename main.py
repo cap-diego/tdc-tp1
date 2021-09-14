@@ -18,34 +18,35 @@ get_eth_desc = {
     "34525": "IPV6"
 }
 
-def mostrar_fuente(s):
-    N = sum(s.values())
-    print(s)
-    sym = sorted(s.items(), key=lambda x: -x[1])
-    print("\n".join([" %s : %.5f" % (d, k / N) for d, k in sym]))
+# def mostrar_fuente(s):
+#     N = sum(s.values())
+#     print(s)
+#     sym = sorted(s.items(), key=lambda x: -x[1])
+#     print("\n".join([" %s : %.5f" % (d, k / N) for d, k in sym]))
 
 
 def calculate_freq():
-    N = sum(S1.values())
-    sym = sorted(S1.items(), key=lambda x: -x[1])
-    for d, k in sym:
-        if d[1] in frequency:
-            frequency[d[1]] += k / N
+    Cantidad_total_simbolos = sum(S1.values())
+    simbolos = sorted(S1.items(), key=lambda x: -x[1])
+    for par_tipo_protocolo, cantidad_apariciones in simbolos:
+        protocolo = par_tipo_protocolo[1]
+        if protocolo in frequency:
+            frequency[protocolo] += cantidad_apariciones / Cantidad_total_simbolos
         else:
-            frequency[d[1]] = k / N
+            frequency[protocolo] = cantidad_apariciones / Cantidad_total_simbolos
 
 def calculate_info():
-    sym = frequency.items()
-    for k, v in sym:
-        info[k] = -math.log(v, 2)
+    simbolos = frequency.items()
+    for protocolo, frecuencia in simbolos:
+        info[protocolo] = -math.log(frecuencia, 2)
 
 def calculate_entropy():
     global entropy
-    sym = frequency.items()
-    r = []
-    for k, v in sym:
-        r.append(info[k] * v)
-    entropy = sum(r)
+    simbolos = frequency.items()
+    entropy = 0.0
+    for protocolo, frecuecia in simbolos:
+        entropy += (info[protocolo] * frecuecia)
+    
 
 
 def callback(pkt):
@@ -56,7 +57,7 @@ def callback(pkt):
     if pkt.haslayer(Ether):
         addr = "BROADCAST" if pkt[Ether].dst == "ff:ff:ff:ff:ff:ff" else "UNICAST"
         prot = pkt[Ether].type
-        prot_desc = get_eth_desc.get(str(prot), prot)
+        prot_desc = get_eth_desc.get(str(prot), str(prot))
         s_i = (addr, prot_desc)
 
         broad_unicast[addr] += 1
@@ -119,3 +120,4 @@ if __name__ == '__main__':
         writer.writerow(["type", "value"])
         for k, v in broad_unicast.items():
             writer.writerow([k, v])
+
