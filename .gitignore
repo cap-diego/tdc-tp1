@@ -1,6 +1,4 @@
 .ipynb_checkpoints/
 
 results
-*.csv
-*.pcap
-*.pcapng
+

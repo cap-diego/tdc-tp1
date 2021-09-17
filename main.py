@@ -3,7 +3,8 @@ import csv
 from scapy.all import *
 
 S1 = {}
-frequency = {}
+protocol_percentage = {}
+symbol_frequency = {}
 info = {}
 entropy = None
 broad_unicast = {
@@ -25,27 +26,39 @@ get_eth_desc = {
 #     print("\n".join([" %s : %.5f" % (d, k / N) for d, k in sym]))
 
 
-def calculate_freq():
-    Cantidad_total_simbolos = sum(S1.values())
+def calculate_protocol_percentage():
+    Cantidad_total_paquetes = sum(S1.values())
     simbolos = sorted(S1.items(), key=lambda x: -x[1])
     for par_tipo_protocolo, cantidad_apariciones in simbolos:
         protocolo = par_tipo_protocolo[1]
-        if protocolo in frequency:
-            frequency[protocolo] += cantidad_apariciones / Cantidad_total_simbolos
+        if protocolo in protocol_percentage:
+            protocol_percentage[protocolo] += (cantidad_apariciones / Cantidad_total_paquetes) * 100
         else:
-            frequency[protocolo] = cantidad_apariciones / Cantidad_total_simbolos
+            protocol_percentage[protocolo] = cantidad_apariciones / Cantidad_total_paquetes * 100
+
+def calculate_symbol_freq():
+    Cantidad_total_paquetes = sum(S1.values())
+    simbolos = sorted(S1.items(), key=lambda x: -x[1])
+    for par_tipo_protocolo, cantidad_apariciones in simbolos:
+        tipo =  "U" if par_tipo_protocolo[0] == "UNICAST" else "B" 
+        protocolo = par_tipo_protocolo[1]
+        symbol = "(" + tipo + " / " + protocolo +")"
+        if symbol in symbol_frequency:
+            symbol_frequency[symbol] += cantidad_apariciones / Cantidad_total_paquetes
+        else:
+            symbol_frequency[symbol] = cantidad_apariciones / Cantidad_total_paquetes
 
 def calculate_info():
-    simbolos = frequency.items()
-    for protocolo, frecuencia in simbolos:
-        info[protocolo] = -math.log(frecuencia, 2)
+    simbolos = symbol_frequency.items()
+    for simbolo, frecuencia in simbolos:
+        info[simbolo] = -math.log(frecuencia, 2)
 
 def calculate_entropy():
     global entropy
-    simbolos = frequency.items()
+    simbolos = symbol_frequency.items()
     entropy = 0.0
-    for protocolo, frecuecia in simbolos:
-        entropy += (info[protocolo] * frecuecia)
+    for simbolo, frecuecia in simbolos:
+        entropy += (info[simbolo] * frecuecia)
     
 
 
@@ -83,12 +96,14 @@ if __name__ == '__main__':
         print("Online")
         sniff(prn=callback)
 
-    calculate_freq()
+    calculate_protocol_percentage()
+    calculate_symbol_freq()
     calculate_info()
     calculate_entropy()
 
     print(S1)
-    print("Freq: {}\n".format(frequency))
+    print("Protocol Percentage: {}\n".format(protocol_percentage))
+    print("Symbol Freq: {}\n".format(symbol_frequency))
     print("Info: {}\n".format(info))
     print("Broadcast/Unicast: {}\n".format(broad_unicast))
     print("Entropy: {}\n".format(entropy))
@@ -98,10 +113,17 @@ if __name__ == '__main__':
 
     print("Escribiendo resultados")
 
-    with open('./results/{}_frequency.csv'.format(args.dataset), 'w') as f:
+    with open('./results/{}_protocol_percentage.csv'.format(args.dataset), 'w') as f:
         writer = csv.writer(f)
         writer.writerow(["type", "value"])
-        for k, v in frequency.items():
+        for k, v in protocol_percentage.items():
+            writer.writerow([k, v])
+
+    
+    with open('./results/{}_symbol_frequency.csv'.format(args.dataset), 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(["type", "value"])
+        for k, v in symbol_frequency.items():
             writer.writerow([k, v])
 
     with open('./results/{}_information.csv'.format(args.dataset), 'w') as f:
@@ -121,3 +143,4 @@ if __name__ == '__main__':
         for k, v in broad_unicast.items():
             writer.writerow([k, v])
 
+    print("Listo!")
