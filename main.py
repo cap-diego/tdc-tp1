@@ -3,10 +3,13 @@ import csv
 from scapy.all import *
 
 S1 = {}
+S2 = {}
+
 protocol_percentage = {}
 symbol_frequency = {}
 info = {}
 entropy = None
+
 broad_unicast = {
     "BROADCAST": 0,
     "UNICAST": 0
@@ -20,12 +23,15 @@ get_eth_desc = {
     "34958": "IEEE 802.1X"
 }
 
-# def mostrar_fuente(s):
-#     N = sum(s.values())
-#     print(s)
-#     sym = sorted(s.items(), key=lambda x: -x[1])
-#     print("\n".join([" %s : %.5f" % (d, k / N) for d, k in sym]))
 
+def is_arp(proto):
+    return proto == 2054
+
+
+def map_op(op):
+    # Defined at /scapy/layers/l2.py
+    m = {"1": "who-has", "2": "is-at"}
+    return m.get(str(op), str(op))
 
 def calculate_protocol_percentage():
     Cantidad_total_paquetes = sum(S1.values())
@@ -60,14 +66,12 @@ def calculate_entropy():
     entropy = 0.0
     for simbolo, frecuecia in simbolos:
         entropy += (info[simbolo] * frecuecia)
-    
 
 
-def callback(pkt):
+def callback_analysis_1(pkt):
     # https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
     # Para IPv4 (RFC791) proto identifica el siguiente nivel de protocolo (pkt.payload.proto)
         # Para IPv6 (RFC8200) el campo es Next Header (pkt.payload.nh)
-
     if pkt.haslayer(Ether):
         addr = "BROADCAST" if pkt[Ether].dst == "ff:ff:ff:ff:ff:ff" else "UNICAST"
         prot = pkt[Ether].type
@@ -80,22 +84,36 @@ def callback(pkt):
             S1[s_i] = 0.0
         S1[s_i] += 1.0
 
-    # mostrar_fuente(S1)
 
+def callback_analysis_2(pkt):
+    if pkt.haslayer(Ether):
+        proto = pkt[Ether].type
+        if not is_arp(proto):
+           return
+
+        print("[ARP]    src: {}  --  dst: {}    Operation: {} ".format(pkt.psrc, pkt.pdst, map_op(pkt.op)))
+        s_i = (pkt.psrc, pkt.pdst)
+        if s_i not in S2:
+            S2[s_i] = 0.0
+        S2[s_i] += 1
 
 if __name__ == '__main__':
-    print("Empezando analisis")
     parser = argparse.ArgumentParser(description='Network analyzer')
     parser.add_argument('--dataset', type=str, nargs='?',
                         help='dataset')
+    parser.add_argument('--analysis', type=int,
+                        help='type of analysis', choices=[1,2])
 
     args = parser.parse_args()
+    type_analysis = 2 if args.analysis == 2 else 1
+    callback = callback_analysis_2 if type_analysis == 2 else callback_analysis_1
     if args.dataset:
-        print("Offline")
+        print("Offline -- Running analysis {}".format(type_analysis))
         sniff(prn=callback, offline="./input/{}.pcap".format(args.dataset))
     else:
-        print("Online")
+        print("Online -- Running analysis {}".format(type_analysis))
         sniff(prn=callback)
+
 
     calculate_protocol_percentage()
     calculate_symbol_freq()
@@ -113,32 +131,34 @@ if __name__ == '__main__':
         exit(0)
 
     print("Escribiendo resultados")
+    os.makedirs(os.path.dirname('./results/analysis_1/'), exist_ok=True)
+    os.makedirs(os.path.dirname('./results/analysis_2/'), exist_ok=True)
 
-    with open('./results/{}_protocol_percentage.csv'.format(args.dataset), 'w') as f:
+    with open('./results/analysis_{}/{}_protocol_percentage.csv'.format(type_analysis, args.dataset), 'w') as f:
         writer = csv.writer(f)
         writer.writerow(["type", "value"])
         for k, v in protocol_percentage.items():
             writer.writerow([k, v])
 
     
-    with open('./results/{}_symbol_frequency.csv'.format(args.dataset), 'w') as f:
+    with open('./results/analysis_{}/{}_symbol_frequency.csv'.format(type_analysis, args.dataset), 'w') as f:
         writer = csv.writer(f)
         writer.writerow(["type", "value"])
         for k, v in symbol_frequency.items():
             writer.writerow([k, v])
 
-    with open('./results/{}_information.csv'.format(args.dataset), 'w') as f:
+    with open('./results/analysis_{}/{}_information.csv'.format(type_analysis, args.dataset), 'w') as f:
         writer = csv.writer(f)
         writer.writerow(["type", "value"])
         for k, v in info.items():
             writer.writerow([k, v])
 
-    with open('./results/{}_entropy.csv'.format(args.dataset), 'w') as f:
+    with open('./results/analysis_{}/{}_entropy.csv'.format(type_analysis, args.dataset), 'w') as f:
         writer = csv.writer(f)
         writer.writerow(["dataset", "value"])
         writer.writerow([args.dataset, entropy])
 
-    with open('./results/{}_broadcast_unicast.csv'.format(args.dataset), 'w') as f:
+    with open('./results/analysis_{}/{}_broadcast_unicast.csv'.format(type_analysis, args.dataset), 'w') as f:
         writer = csv.writer(f)
         writer.writerow(["type", "value"])
         for k, v in broad_unicast.items():
