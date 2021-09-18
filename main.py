@@ -16,7 +16,8 @@ broad_unicast = {
 get_eth_desc = {
     "2048": "IPV4",
     "2054": "ARP",
-    "34525": "IPV6"
+    "34525": "IPV6",
+    "34958": "IEEE 802.1X"
 }
 
 # def mostrar_fuente(s):
