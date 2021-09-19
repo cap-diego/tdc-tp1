@@ -7,8 +7,10 @@ S2 = {}
 
 protocol_percentage = {}
 symbol_frequency = {}
+symbol_ip_frequency = {}
 info = {}
 entropy = None
+entropy_ip = None
 
 broad_unicast = {
     "BROADCAST": 0,
@@ -34,39 +36,71 @@ def map_op(op):
     return m.get(str(op), str(op))
 
 def calculate_protocol_percentage():
-    Cantidad_total_paquetes = sum(S1.values())
+    cantidad_total_paquetes = sum(S1.values())
     simbolos = sorted(S1.items(), key=lambda x: -x[1])
     for par_tipo_protocolo, cantidad_apariciones in simbolos:
         protocolo = par_tipo_protocolo[1]
         if protocolo in protocol_percentage:
-            protocol_percentage[protocolo] += (cantidad_apariciones / Cantidad_total_paquetes) * 100
+            protocol_percentage[protocolo] += (cantidad_apariciones / cantidad_total_paquetes) * 100
         else:
-            protocol_percentage[protocolo] = cantidad_apariciones / Cantidad_total_paquetes * 100
+            protocol_percentage[protocolo] = cantidad_apariciones / cantidad_total_paquetes * 100
+
+
+def calculate_ip_percentage():
+    total_paquetes = sum(S2.values())
+    simbolos = sorted(S2.items(), key=lambda x: -x[1])
+    for ip, cantidad_apariciones in simbolos:
+        if ip in protocol_percentage:
+            protocol_percentage[ip] += (cantidad_apariciones / total_paquetes) * 100
+        else:
+            protocol_percentage[ip] = cantidad_apariciones / total_paquetes * 100
+
 
 def calculate_symbol_freq():
-    Cantidad_total_paquetes = sum(S1.values())
+    cantidad_total_paquetes = sum(S1.values())
     simbolos = sorted(S1.items(), key=lambda x: -x[1])
     for par_tipo_protocolo, cantidad_apariciones in simbolos:
         tipo =  "U" if par_tipo_protocolo[0] == "UNICAST" else "B" 
         protocolo = par_tipo_protocolo[1]
         symbol = "(" + tipo + " / " + protocolo +")"
         if symbol in symbol_frequency:
-            symbol_frequency[symbol] += cantidad_apariciones / Cantidad_total_paquetes
+            symbol_frequency[symbol] += cantidad_apariciones / cantidad_total_paquetes
         else:
-            symbol_frequency[symbol] = cantidad_apariciones / Cantidad_total_paquetes
+            symbol_frequency[symbol] = cantidad_apariciones / cantidad_total_paquetes
+
+def calculate_ip_symbol_freq():
+    cantidad_total_paquetes = sum(S2.values())
+    simbolos = sorted(S2.items(), key=lambda x: -x[1])
+    for ip, cantidad_apariciones in simbolos:
+        if ip in symbol_frequency:
+            symbol_ip_frequency[ip] += cantidad_apariciones / cantidad_total_paquetes
+        else:
+            symbol_ip_frequency[ip] = cantidad_apariciones / cantidad_total_paquetes
 
 def calculate_info():
     simbolos = symbol_frequency.items()
     for simbolo, frecuencia in simbolos:
         info[simbolo] = -math.log(frecuencia, 2)
 
+def calculate_ip_info():
+    simbolos = symbol_ip_frequency.items()
+    for simbolo, frecuencia in simbolos:
+        info[simbolo] = -math.log(frecuencia, 2)
+
+
 def calculate_entropy():
     global entropy
     simbolos = symbol_frequency.items()
     entropy = 0.0
-    for simbolo, frecuecia in simbolos:
-        entropy += (info[simbolo] * frecuecia)
+    for simbolo, frecuencia in simbolos:
+        entropy += (info[simbolo] * frecuencia)
 
+def calculate_ip_entropy():
+    global entropy_ip
+    simbolos = symbol_ip_frequency.items()
+    entropy_ip = 0.0
+    for simbolo, frecuencia in simbolos:
+        entropy_ip += (info[simbolo] * frecuencia)
 
 def callback_analysis_1(pkt):
     # https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
@@ -91,11 +125,11 @@ def callback_analysis_2(pkt):
         if not is_arp(proto):
            return
 
-        print("[ARP]    src: {}  --  dst: {}    Operation: {} ".format(pkt.psrc, pkt.pdst, map_op(pkt.op)))
-        s_i = (pkt.psrc, pkt.pdst)
-        if s_i not in S2:
-            S2[s_i] = 0.0
-        S2[s_i] += 1
+        #print("[ARP]    src: {}  --  dst: {}    Operation: {} ".format(pkt.psrc, pkt.pdst, map_op(pkt.op)))
+        ip_src = pkt.psrc
+        if ip_src not in S2:
+            S2[ip_src] = 0.0
+        S2[ip_src] += 1
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Network analyzer')
@@ -114,13 +148,19 @@ if __name__ == '__main__':
         print("Online -- Running analysis {}".format(type_analysis))
         sniff(prn=callback)
 
+    if type_analysis == 1:
+        calculate_protocol_percentage()
+        calculate_symbol_freq()
+        calculate_info()
+        calculate_entropy()
+    else:
+        calculate_ip_percentage()
+        calculate_ip_symbol_freq()
+        calculate_ip_info()
+        calculate_ip_entropy()
+        symbol_frequency = symbol_ip_frequency
+        entropy = entropy_ip
 
-    calculate_protocol_percentage()
-    calculate_symbol_freq()
-    calculate_info()
-    calculate_entropy()
-
-    print(S1)
     print("Protocol Percentage: {}\n".format(protocol_percentage))
     print("Symbol Freq: {}\n".format(symbol_frequency))
     print("Info: {}\n".format(info))
@@ -164,4 +204,3 @@ if __name__ == '__main__':
         for k, v in broad_unicast.items():
             writer.writerow([k, v])
 
-    print("Listo!")
