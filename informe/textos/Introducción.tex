@@ -1,0 +1,16 @@
+
+
+En el presente práctico, se pusó en práctica los contenidos provistos por la teoría de la información con el fín de analizar redes de información. Para ello, utilizaremos dos herramientas que permiten analizar paquetes de datos: Scapy y Wireshark.
+
+{\bf Scapy} provee la función ``sniff``, la cuál permite mediante la activación del modo {\bf promiscuo} interceptar los paquetes que circulan por una red. {\bf Wireshark} también tiene esta funcionalidad al ejecutar en modo superuser, pero presenta una interfaz de usuario más amigable, y facilidad para exportar los paquetes interceptados y salvarlos. Nuestro flujo de trabajo consistió en guardar los paquetes que interceptábamos con {\bf Wireshark}, guardarlos en un archivo extensión \texttt{pcap} y posteriormente leerlos con {\bf Scapy} para extraer información útil.
+\newline
+Para la primer medición, consideramos la siguiente fuente (brindada por la cátedra):
+\begin{itemize}
+
+    \item $S = \{s_{1} \dots s_{n}\}$, donde cada $s_{i}$ está formado por la combinación entre el tipo de destino de la trama y el protocolo de la capa inmediata superior encapsulado en la misma. Ejemplo: $<$ Broadcast, ARP $>$
+    
+        \item $S_{2} = \{s_{1} \dots s_{n}\}$, donde cada $s_{i}$ está formado por la dirección IP origen del paquete ARP
+    
+\end{itemize}
+
+Para el análisis calcularemos a partir de las mediciones los valores de entropía de la fuente, frecuencias de aparición e información que aporta cada protocolo y porcentaje de tráfico Broadcast vs Unicast.

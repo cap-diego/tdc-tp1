@@ -1,0 +1,91 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc} % para poder usar tildes en archivos UTF-8
+\usepackage[spanish]{babel} % para que comandos como \today den el resultado en castellano
+\usepackage{a4wide} % márgenes un poco más anchos que lo usual
+\usepackage{caratula}
+% \usepackage[left=3cm,right=3cm,bottom=3cm,top=3cm]{geometry}
+%comandos para comentar secciones grandes
+\usepackage{comment}
+% Comandos para simbolos matematicos.
+\usepackage{amsmath, amssymb, tabularx}
+
+% Comandos para referencias
+\usepackage{natbib}
+
+% Comandos para Figuras, Graficos, Tikz etc.
+\usepackage{tikz}
+\usepackage{epsfig}
+\usepackage{pgfplots}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{svg}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+% Comandos para teoremas etc.
+\usepackage{amsthm}
+\newtheorem{theorem}{Teorema}
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{proposition}[theorem]{Proposición}
+\newtheorem{remark}{Observación}
+\newtheorem{corollary}{Corolario}
+% \newproof{proof}{Demostración}
+
+% Comandos para algoritmos.
+\usepackage[noend]{algpseudocode}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\algnewcommand{\IfThenElse}[3]{% \IfThenElse{<if>}{<then>}{<else>}
+\State \algorithmicif\ #1\ \algorithmicthen\ #2\ \algorithmicelse\ #3}
+\algnewcommand{\IfThen}[2]{% \IfThenElse{<if>}{<then>}
+  \State \algorithmicif\ #1\ \algorithmicthen\ #2}
+  
+  \usepackage{caption}
+
+%\algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
+%\algtext{Indent}
+%\algtext{EndIndent}
+
+\algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
+\algtext*{Indent}
+\algtext*{EndIndent}
+
+
+%\renewcommand{\baselinestretch}{1.5}
+
+% Comente lo de arriba, porque me parece que es mejor la distancia predeterminada entre renglones. -M
+
+\begin{document}
+
+\titulo{Trabajo práctico: Wiretapping\-}
+
+\fecha{09/2021}
+
+\materia{Teoría de la información}
+
+\integrante{Herrera, Leon}{105/18}{leonazulado@gmail.com}
+\integrante{Buceta, Diego}{1/17}{diegobuceta35@gmail.com}
+\integrante{Fernández Ortuzar, Agustín}{185/18}{agustinalejofernandezortuzar@gmail.com}
+
+
+\maketitle
+
+\section{Introducción}
+\input{textos/introducción}
+
+\section{Métodos y condiciones de los experimentos}
+\input{textos/Métodos y condiciones de los experimentos}
+
+\newpage
+\section{Resultados de los experimentos}
+\input{textos/Resultados de los experimentos}
+
+\newpage
+\section{Conclusión}
+\input{textos/Conclusión}
+
+\end{document}

@@ -1,4 +1,9 @@
 .ipynb_checkpoints/
 
+.idea
+.Ds_Store
 results
-
+input/ws_1.*
+input/ws_2.*
+input/ws_3.*
+input/out.*

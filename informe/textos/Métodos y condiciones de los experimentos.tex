@@ -1,0 +1,29 @@
+Realizamos capturas de paquetes en distintos horarios en distintas redes LAN buscando comportamientos diversos para ver la diferencia en los resultados. Utilizamos la herramienta Wireshark para capturar los paquetes de las redes, que luego exportamos a archivos .csv y .pcap para analizarlos con código escrito en python. Extendimos el código provisto para que tome como fuente un archivo .pcap en lugar de capturar la red en tiempo real, calcule la frecuencia e información de cada símbolo, y la entropía de las fuentes y luego escriba los resultados en archivos .csv para que podamos analizarlos y crear gráficos.
+
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{||c c c c c c||} 
+             \hline
+             Dataset & Tecnología & Tamaño & Tamaño de la muestra & Horario de la muestra & Día de la muestra. \\ [0.5ex] 
+             \hline\hline
+             $Red 1$ & Wi-Fi & Red LAN & 39511 tramas & 15:20hs & Viernes \\ 
+             \hline
+             $Red 2$ & Wi-Fi & Red LAN & 23841 tramas & 16hs & Sábado \\
+             \hline
+             $Red 3$ & Wi-Fi & Red LAN & 50695 tramas & 19:40hs & Viernes \\ [1ex] 
+             \hline
+        \end{tabular}
+    \end{center}
+    \caption{Condiciones de los datasets}
+    \label{tabla de condiciones de datasets}
+\end{table}
+
+
+\subsection{Casa integrante 1 - dataset $Red 1$} 
+En el momento del análisis, había una computadora y un celular conectados a la red wifi. Se capturaron paquetes durante una hora, haciendo un uso de multimedia sobre la red. Se obtuvieron 39511 tramas. 
+
+\subsection{Casa integrante 2 - dataset $Red 2$}
+Se capturaron paquetes durante una hora desde una computadora portatil conectada a una red wifi doméstica con acceso a Internet, en la que además se hallaban conectados dos celulares, una tablet, dos cámaras de seguridad y dos televisores.
+
+\subsection{Casa Integrante 3 - dataset $Red 3$}
+Desde una computadora portatil, se capturaron 1 hora de paquetes en una red doméstica. En esta red estaban ademas conectados: Una computadora de escritorio por ethernet, dos celulares y un repetidor de wi-fi al que estaban probablemente conectadas una tablet y una computadora portatil.
