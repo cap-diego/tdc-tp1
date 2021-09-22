@@ -1,16 +1,18 @@
 
+\section{Introducción} %246 palabras%
+En el presente, se pusieron en práctica los contenidos provistos por la teoría de la información con el fín de analizar el tráfico de información en distintas redes. Para ello, utilizamos dos herramientas que permiten capturar y estudiar los paquetes de datos que ``viajan'' en una red: Scapy y Wireshark.
 
-En el presente práctico, se pusó en práctica los contenidos provistos por la teoría de la información con el fín de analizar redes de información. Para ello, utilizaremos dos herramientas que permiten analizar paquetes de datos: Scapy y Wireshark.
+{\bf Scapy} provee la función \emph{sniff}, la cual permite capturar los paquetes que circulan por una red, mediante la activación del {\bf modo  promiscuo}. En este modo los paquetes con una dirección destino  MAC ajena no se descartan. \\
+{\bf Wireshark} provee la misma funcionalidad, pero además presenta una interfaz de usuario más amigable y facilidad para exportar los paquetes interceptados y guardarlos para su análisis posterior.\\
+Nuestro flujo de trabajo consistió en guardar los paquetes que capturamos con {\bf Wireshark} en archivos \texttt{.pcap} y posteriormente leerlos con {\bf Scapy} para analizarlos.
 
-{\bf Scapy} provee la función ``sniff``, la cuál permite mediante la activación del modo {\bf promiscuo} interceptar los paquetes que circulan por una red. {\bf Wireshark} también tiene esta funcionalidad al ejecutar en modo superuser, pero presenta una interfaz de usuario más amigable, y facilidad para exportar los paquetes interceptados y salvarlos. Nuestro flujo de trabajo consistió en guardar los paquetes que interceptábamos con {\bf Wireshark}, guardarlos en un archivo extensión \texttt{pcap} y posteriormente leerlos con {\bf Scapy} para extraer información útil.
-\newline
-Para la primer medición, consideramos la siguiente fuente (brindada por la cátedra):
+Realizamos mediciones sobre dos modelos de fuentes ($S_{1}$, propuesta por la cátedra, y $S_{2}$, propuesta por nosotros) obtenidas a partir de las capturas de paquetes:
 \begin{itemize}
 
-    \item $S = \{s_{1} \dots s_{n}\}$, donde cada $s_{i}$ está formado por la combinación entre el tipo de destino de la trama y el protocolo de la capa inmediata superior encapsulado en la misma. Ejemplo: $<$ Broadcast, ARP $>$
+    \item $S_{1} = \{s_{1} \dots s_{n}\}$, donde cada $s_{i}$ está formado por la combinación entre el tipo de destino de la trama y el protocolo de la capa inmediata superior encapsulado en la misma. Ejemplo: $<$ Broadcast, ARP $>$
     
-        \item $S_{2} = \{s_{1} \dots s_{n}\}$, donde cada $s_{i}$ está formado por la dirección IP origen del paquete ARP
+    \item $S_{2} = \{s_{1} \dots s_{n}\}$, donde cada $s_{i}$ corresponde a la dirección IP origen de los paquetes ARP.
     
 \end{itemize}
 
-Para el análisis calcularemos a partir de las mediciones los valores de entropía de la fuente, frecuencias de aparición e información que aporta cada protocolo y porcentaje de tráfico Broadcast vs Unicast.
+Una vez filtrados los símbolos de interés, calculamos los valores de entropía de la fuente, la composición y proporciones de las muestras, y la información que aporta cada símbolo. En la sección de resultados presentamos en detalle lo obtenido.

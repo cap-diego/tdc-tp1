@@ -1,38 +1,30 @@
-
-Es clara la predominancia del protocolo \texttt{IPV4} en las tramas de cada fuente escuchadas. Esto en parte es razonable, debido a la naturaleza de \texttt{ARP} y el poco uso que tiene actualmente \texttt{IPv6}. También notamos cómo en redes donde participan más dispositivos y la actividad es más diversa \texttt{ARP} ocupa un mayor protagonismo 
-
-• ¿Considera que las muestras obtenidas analizadas son representativas del comportamiento general de la red?
-
-Red 1: Es representativa. Había pocos dispositivos conectados y el uso se mantuvo constante a lo largo de toda la medición lo cuál resulto en una gran predominancia \texttt{IPv4} (mayormente con UDP como protocolo en el nivel superior) y pocos \texttt{ARP}, ya que no se conectaban nuevos dispositivos ni cambiaba la comunicación.
-
-Red 2: No es representativo porque se utilizó una aplicación que revisa qué dispositivos están conectados en la red wifi, y para ello emitió una gran cantidad de broadcasts consultando por las direcciones IP dentro de un rango.
-
-Red 3: Es representativo, ya que el uso que se le estaba dando a la red era el habitual en nuestra vivienda. Subida y bajada constante de datos es habitual por la profesión de los integrantes de esta red.
-
-• ¿Hay alguna relación entre la entropía de las redes y alguna característica de las mismas (ej.:tamaño, tecnología, etc)?
-Notamos que obtuvimos mediciones muy similares para las 3 redes y en base al análisis creemos que se debe justamente a las características que comparten: topologías, usos (al menos durante la escucha) y tecnologías similares.
-
-• ¿Considera signicativa la cantidad de tráfico broadcast sobre el tráfico total?
-No. Representamos con gráficos de torta la relevancia qeu tenian este tráfico y en ningún caso superó el 0.5\%.
-
-• ¿Cuál es la función de cada uno de los protocolos encontrados?
-\texttt{IPV4} e \texttt{IPV6} identificar dispositivos en una red para permitir la comunicación. Entre estos dos la diferencia más notaria es la cantidad de bits que tienen disponibles para representar la dirección.
-
-\texttt{ARP} Encontrar la dirección MAC de un dispositivo a través de una IP.
-
-\texttt{IEEE 802.1X} Protocolo de seguridad para autenticar usuarios que quieren conectarse a una red.
+\section{Conclusión}
 
 
-• ¿Cuáles son protocolos de control y cuáles transportan datos de usuario?
-Los paquetes que transportan datos de usuario son los IP v4 y v6, y ARP y IEEE 802.1x son de control ya que se encargan de problemas internos de la red misma.
+\textbf{¿Considera que las muestras obtenidas analizadas son representativas del comportamiento general de la red?} %Esto puede quedarse en esta sección%
+
+\begin{description}
+    \item[Red 1]: Es representativa. Había pocos dispositivos conectados y el uso se mantuvo constante a lo largo de toda la medición lo cuál resulto en una gran predominancia \texttt{IPv4} (mayormente con UDP como protocolo en el nivel superior) y pocos \texttt{ARP}, ya que no se conectaban nuevos dispositivos ni cambiaba la comunicación.
+    
+    \item[Red 2]: No es representativo porque se utilizó una aplicación que revisa qué dispositivos están conectados en la red wifi, y para ello emitió una gran cantidad de broadcasts consultando por las direcciones IP dentro de un rango.
+
+    \item[Red 3]: Es representativo, ya que el uso que se le estaba dando a la red era el habitual en nuestra vivienda. Subida y bajada constante de datos es habitual por la profesión de los integrantes de esta red.
+        
+\end{description}
+
+A excepción de unas pocas sorpresas, los resultados cayeron dentro de lo que esperabamos. Es clara la predominancia del protocolo \texttt{IPV4} en las tramas de cada red escuchada. Esto en parte es razonable, debido a la naturaleza de \texttt{ARP} (sólo es necesario cuando no se tiene una dirección MAC, una vez obtenida no se vuelve a solicitar con mucha frecuencia) y la baja adopción que tiene actualmente \texttt{IPv6}, aunque en el futuro cercano se volverá imprescindible. 
 
 
-• ¿En alguna red la entropía de la fuente alcanza la entropía máxima teórica?
-Dado que tomamos como símbolos a los pares (Tipo de destino / Protocolo), tenemos que el largo promedio de las codificaciones es de 56 bits ya que el tipo de destino se determina a partir de la dirección de destino codificada en 40 bits y el tipo de protocolo se codifica en 16 bits. Luego la entropía máxima es 56 y es claro que en ninguna de las redes llega al maximo. Como la gran mayoría de los símbolos obtenidos son (Unicast / IPv4), la información provista por los otros símbolos menos frecuentes es muy alta y la información obtenida en promedio es extremadamente baja.
+\newpage
+
+\textbf{¿Hay alguna relación entre la entropía de las redes y alguna característica de las mismas (ej.:tamaño, tecnología, etc)?} %Esto tambien puede quedarse
+
+Notamos que obtuvimos mediciones muy similares para las 3 redes y en base al análisis creemos que se debe justamente a las características que comparten: topologías (tipo estrella), usos (al menos durante la escucha) y tecnología (Wi-Fi).
 
 
-• ¿Ha encontrado protocolos no esperados? ¿Puede describirlos?
-\begin{itemize}
-    \item El protocolo \texttt{IEEE 802.1X}. Parece ser un protocolo de control de autenticación de dispositivos en puertos inalambricos.
-    \item \texttt{IPV6} dado que actualmente su uso no se ha expandido como \texttt{IPv4} nos resultó curioso encontrarlo.
-\end{itemize}
+
+
+
+
+
+

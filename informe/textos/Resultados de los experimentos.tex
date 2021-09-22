@@ -1,135 +1,75 @@
-\subsection{Casa integrante 1 - dataset $Red 1$} 
+\section{Resultados de los experimentos}
 
-La entropía calculada fue de 0.049668, un valor bajo lo cuál indica que cada símbolo obtenido no arroja mucha información y es predecible.
+\subsection{Fuente de información $S_{1}$ - Tipos de trama y protocolos }
 
+La primer observación que realizamos sobre los resultados es la proporción de paquetes Unicast (aquellos eviados a un dispositivo específico) y Broadcast (aquellos enviados a todos los dispositivos de la red local) de cada muestra.
 
-\begin{figure}[H]\begin{center}
-  \includegraphics[width=0.6\textwidth]{images/freq_ws_4_info.png}\vspace{1em}
-  \caption{Frecuencias por protocolo}
-\end{center}\end{figure}
+\vspace{4mm}
 
+\textbf{¿Considera signicativa la cantidad de tráfico broadcast sobre el tráfico total?}
 
-\texttt{IPV4} (con 0.9955\%) fue el protocolo más escuchado en contraposición contra \texttt{ARP} (0.0019\%) e \texttt{IPV6} (0.0024\%), lo cuál tiene sentido por la naturaleza de estos últimos. Recordemos que ARP es un protocolo utilizado para encontrar la dirección MAC de un host a partir de su \texttt{IP} en la red y actualizar su tabla \texttt{ARP}. Esto sólo es necesario hacerlo cuando la tabla de un host no contiene una entrada para el host con el que quiere comunicarse. Si tenemos en cuenta la baja cantidad de dispositivos en la red es más que razonable obtener una tan baja presencia de \texttt{ARP}.
-
-\begin{figure}[H]
-    \includegraphics[scale=0.6]{images/resultados_generales/porcentaje_cada_protocolo_cada_muestra.png}\vspace{1em}
-    \centering
-    \caption{Porcentaje de cada protocolo en cada muestra capturada}
-    \label{fig: porcentajes}
-\end{figure}
-
-Se pueden observar que el protocolo IPv4 domina las 3 redes, como es de esperarse. La red 2 
-
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}{0.45\linewidth}
-        \includegraphics[scale=0.45]{images/resultados_diego/red_1_info.png}
-        \caption{Red 1}
-        \label{fig: info red 1}
-    \end{subfigure}
-    \begin{subfigure}{0.5\linewidth} 
-        \includegraphics[scale=0.45]{images/resultados_agus/red_2_info.png}
-        \caption{Red 2}
-        \label{fig: info red 2}
-    \end{subfigure}
-    \begin{subfigure}{0.5\linewidth} 
-        \centering
-        \includegraphics[scale=0.45]{images/resultados_lion/red_3_info.png}
-        \caption{Red 3}
-        \label{fig: info red 3}
-    \end{subfigure}
-    \caption{Cantidad de información por cada símbolo en cada muestra.}
-    \label{fig: informacion de los simbolos}
-\end{figure}
-
-
-
-Dado que la entropía es muy baja, la aparición de símbolos como \texttt{ARP} e \texttt{IPV6} aportan mucha información dada su escasa aparición.
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.3\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{images/resultados_diego/red_1_broadcast_unicast.png}
+        \includesvg[width=\textwidth]{images/broadcast-unicast/broadunicast_Red_1_info.svg}
         \caption{Red 1}
         \label{fig: b/u red 1}
     \end{subfigure}
     \begin{subfigure}[b]{0.3\textwidth} 
         \centering
-        \includegraphics[scale=0.7, width=\textwidth]{images/resultados_agus/red_2_broadcast_unicast.png}
+        \includesvg[width=\textwidth]{images/broadcast-unicast/broadunicast_Red_2_info.svg}
         \caption{Red 2}
         \label{fig: b/u red 2}
     \end{subfigure}
     \begin{subfigure}[b]{0.3\textwidth} 
         \centering
-        \includegraphics[width=\textwidth]{images/resultados_lion/red_3_broadcast_unicast.png}
+        \includesvg[width=\textwidth]{images/broadcast-unicast/broadunicast_Red_3_info.svg}
         \caption{Red 3}
         \label{fig: b/u red 3}
     \end{subfigure}
     \caption{Proporción de Broadcast/Unicast en cada muestra.}
-    \label{fig: informacion de los simbolos}
+    \label{fig: broadcast/unicast }
 \end{figure}
 
-\begin{table}[H]\begin{center}
-  \begin{tabular}{|c|c|}
-  \hline
-  \textbf{Tráfico} & \textbf{Frecuencia} \\ \hline
-  \texttt{Unicast   }&  0.998\%     \\ \hline
-  \texttt{Broadcast      }&  0.0014\%     \\ \hline
-  \end{tabular}
-  \caption{Frecuencia de Unicast y Broadcast en la $Red 1$}
-  \label{Red 1}
-\end{center}\end{table}
+La segunda observación fue sobre los protocolos de Nivel 3 que aparecieron en los paquetes capturados. En la Figura~\ref{fig: porcentajes protocolos} se ve cómo la gran mayoría de los paquetes utilizaban el protocolo \textbf{IPv4} y una vez más la $Red 2$ parece marcar una diferencia ya que una cantidad notable de paquetes utilizaban el protocolo \textbf{IPv6}, creemos que esto se debió a la presencia de un SmartTV nuevo, ya que en los ultimos años comenzó a impulsarse el uso de este protocolo.
 
-\begin{table}[H]\begin{center}
-  \begin{tabular}{|c|c|}
-  \hline
-  \textbf{Tráfico} & \textbf{Frecuencia} \\ \hline
-  \texttt{Unicast   }&  0.9682\%     \\ \hline
-  \texttt{Broadcast      }&  0.0317\%     \\ \hline
-  \end{tabular}
-  \caption{Frecuencia de Unicast y Broadcast en la $Red 2$}
-  \label{Red 2}
-\end{center}\end{table}
+\begin{figure}[H]
+    \includesvg[width=0.7\textwidth]{images/resultados_generales/porcentaje_cada_protocolo_cada_muestra.svg}\vspace{1em}
+    \centering
+    \caption{Porcentaje de cada protocolo en cada muestra capturada}
+    \label{fig: porcentajes protocolos}
+\end{figure}
 
-\begin{table}[H]\begin{center}
-  \begin{tabular}{|c|c|}
-  \hline
-  \textbf{Tráfico} & \textbf{Frecuencia} \\ \hline
-  \texttt{Unicast   }&  0.9862\%     \\ \hline
-  \texttt{Broadcast      }&  0.0037\%     \\ \hline
-  \end{tabular}
-  \caption{Frecuencia de Unicast y Broadcast en la $Red 3$}
-  \label{Red 3}
-\end{center}\end{table}
+\textbf{¿Cuál es la función de cada uno de los protocolos encontrados?}
+\begin{itemize}
+
+    \item \textbf{IPV4 e IPV6:} identificar dispositivos en una red y permitir la comunicación entre ellos. Entre estos dos la diferencia más notaria es la cantidad de bits que tienen disponibles para representar la dirección, IPv6 siendo el más grande de los dos, permite direccionar a una cantidad de dispositivos muy superior a IPv4.
+
+    \item \textbf{ARP:} encontrar la dirección MAC de un dispositivo a través de una IP.
+    
+    \item \textbf{IEEE 802.1X:} autenticar dispositivos que quieren conectarse a una red inalámbrica, es un protocolo de seguridad.
+
+\end{itemize}
+
+\textbf{¿Ha encontrado protocolos no esperados? ¿Puede describirlos?}
+
+No esperábamos encontrarnos con \texttt{IPV6}, dado que actualmente su uso no es tan masivo como \texttt{IPv4}, ni con el protocolo \texttt{IEEE 802.1X}, que nos era desconocido.
+
+\vspace{4mm}
+
+\textbf{¿Cuáles son protocolos de control y cuáles transportan datos de usuario?} %revisar%
+
+Los protocolos \textbf{ARP} y \textbf{IEEE 802.1x} son de control, \textbf{IPv4} e \textbf{IPv6} pueden transportan datos de usuario. Pero ya que pertenecen al Nivel 3 del modelo OSI, todos se encargan de alguna manera de establecer una ruta o conexión entre dos hosts.
 
 
-La diferencia de porcentajes entre uno se debe a que \texttt{BROADCAST} es el tipo de tráfico de los paquetes ARP que por lo anterior vimos tienen bajas apariciones, mientras que UNICAST representa mayoritariamente todo el otro tráfico, por ejemplo, el que ocurrió durante el consumo de multimedia, que también por lo anterior, vimos eran los paquetes con mayor aparición.
+La capa de transporte, nivel 4 del modelo OSI, es la responsable de enviar los datos entre dos hosts que establecieron una conexión. Estos protocolos de transporte, tales como \texttt{TCP} y \texttt{UDP} podemos encontrarlos al inspeccionar la capa superior de los paquetes \texttt{IP} obtenidos durante la medición.
 
+Luego, dentro de los mismos paquetes, atravesando el decapsulamiento de cada \texttt{layer}, podemos encontrar distintos protocolos de transporte que determinan la forma en la que los datos de usuario serán comunicados y proveen distintos grados de seguridad respecto a la recepción del paquete por parte del destinatario. En las muestras capturadas la mayoría eran \textbf{TCP} o \textbf{UDP}.
 
-\subsection{Casa integrante 2 - dataset $Red 2$}
+\vspace{4mm}
 
-• Porcentaje de tráfico Broadcast/Unicast sobre el tráfico total.
-
- - Broadcast: 756
- - Unicast: 23085
-
-
-• Porcentaje de aparición de cada protocolo encontrado.
-
- - IPV4: 0.9629
- - ARP: 0.0297
- - IPV6: 0.0071
- - 34958: 0.0003
- 
-• Entropía de la red: 0.2572
-
-• Cantidad de información de cada símbolo comparado con la entropía de la red.
-
- - IPV4: 0.0546
- - ARP: 5.0715
- - IPV6: 7.1318
- - 34958: 11.9562
+Como explicamos en la sección anterior, los símbolos de $S_{1}$ están compuestos por estos puntos observados, el tipo de destino y el protocolo utilizado. Observandolos como tuplas pudimos calcular la entropía de cada red, dispuestas en el Cuadro~\ref{tab: entropía}.
 
 \begin{table}[H]
 \begin{center}
@@ -144,32 +84,116 @@ La diferencia de porcentajes entre uno se debe a que \texttt{BROADCAST} es el ti
         $Red 3$ & $0.08226822373062319$ \\ [1ex] 
         \hline
     \end{tabular}
-    \caption{Tabla de Entropía en las redes}
-    \label{Tabla entropía}
+    \caption{Entropía en las redes}
+    \label{tab: entropía}
 \end{center}
 \end{table}
 
+\textbf{¿En alguna red la entropía de la fuente alcanza la entropía máxima teórica?}
 
-\subsection{Fuente de información $S_{2}$ - Hosts distinguidos en la red } 
-\subsubsection{Casa integrante 1 - dataset $Red 1$}
+Dado que tomamos como símbolos a los pares (Tipo de destino / Protocolo), tenemos que el largo promedio de las codificaciones es de 56 bits ya que el tipo de destino se determina a partir de la dirección de destino codificada en 40 bits y el tipo de protocolo se codifica en 16 bits. Luego la entropía máxima es 56 y es claro que en ninguna de las redes llega al maximo. 
+
+Como la gran mayoría de los símbolos obtenidos son (Unicast / IPv4), la información provista por los otros símbolos menos frecuentes es muy alta y la información obtenida en promedio es extremadamente baja. La entropía de la $Red2$ es notablemente más alta que la de las otras redes, ya que en ésta, como fue observado anteriormente, la diferencia entre las frecuencias de cada símbolo es un poco menor debido al uso de la red durante la medición. Esto puede observarse en los gráficos de la Figura~\ref{fig: informacion de los simbolos de s1}, en los que vemos la cantidad de información provista por cada símbolo en cada red.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}{0.5\linewidth} 
-        \includegraphics[scale=0.5]{images/resultados_generales/red_1_info.png}
+    \begin{subfigure}[b]{0.45\textwidth} 
+        \includesvg[width=\textwidth]{images/informacion/info_Red_1_info.svg}
         \centering
         \caption{Red 1}
     \end{subfigure}
-    \begin{subfigure}{0.5\linewidth} 
-        \includegraphics[scale=0.5]{images/resultados_generales/red_2_info.png}
+    \begin{subfigure}[b]{0.45\textwidth} 
+        \includesvg[width=\textwidth]{images/informacion/info_Red_2_info.svg}
         \centering
         \caption{Red 2}
     \end{subfigure}
-    \begin{subfigure}{0.5\linewidth} 
+    \begin{subfigure}[b]{0.45\textwidth}  
         \centering
-        \includegraphics[scale=0.45]{images/resultados_generales/red_3_info.png}
+        \includesvg[width=\textwidth]{images/informacion/info_Red_3_info.svg}
         \caption{Red 3}
     \end{subfigure}
     \caption{Cantidad de información por cada símbolo en cada muestra.}
-    \label{fig: informacion de los simbolos}
+    \label{fig: informacion de los simbolos de s1}
 \end{figure}
+
+
+\subsection{Fuente de información $S_{2}$ - Hosts distinguidos en la red }
+
+Por otro lado tenemos las observaciones que realizamos sobre nuestro segundo modelo de fuente $S_{2}$. En la Figura~\ref{fig: informacion de los simbolos de s2} vemos la información provista por cada símbolo en cada red. Lo primero que se nota en comparación con la fuente $S_{1}$ es que la entropía es mucho más alta por la mejor distribución de estos símbolos en los paquetes, aunque sigue habiendo una gran amplitud entre la información provista por el símbolo más frecuente y el menos frecuente (El porcentaje de aparición de cada símbolo se puede ver en la Figura~\ref{fig: porcentaje de aparcion s2}).
+
+\vspace{4mm}
+
+\textbf{¿Se pueden distinguir nodos? ¿Se les puede adjudicar alguna función específica?}
+
+Se pueden distinguir nodos por su dirección \texttt{IP} dentro de la red local e incluso pueden identificarse ciertas marcas cuyas direcciones wireshark reconoce. Como la red \texttt{LAN} tiene una topología en estrella, en la que cada dispositivo está conectado a un nodo central, en este caso el router, no es de extrañar que éste (\texttt{IP}: 192.168.0.1) sea el que menos información provee y por ende el que más veces apareció en dos de las muestras ($Red1$ y $Red3$). La razón por la que en la $Red2$ el símbolo '192.168.0.36' provee menos información que el router yace en el uso de la aplicación ya mencionada que consultaba todas las direcciones \texttt{IP} posibles y cada una de estas consultas era un paquete \texttt{ARP}.
+
+\vspace{4mm}
+
+\textbf{¿La entropía de la fuente es máxima? ¿Qué sugiere esto acerca de la red?}
+
+Como se aprecia en la figura \ref{fig: informacion de los simbolos de s2}, la entropía de $S_{2}$ no es máxima. Si lo fuera sugeriría que cada host de la red tiene, desde el punto de vista de envío de paquetes, un comportamiento similar. En nuestro caso, el host con mayor actividad (y cuyos símbolos proveen menos información) es el router (dirección \texttt{192.168.0.1}), lo cual estimamos se debe a que las muestras fueron tomadas en redes con topología estrella.
+
+\newpage
+
+En lo que refiere a los demás hosts, solo en la $Red 3$ hay un host con presecia de paquetes enviados comparable. Esto puede haberse dado por un host con subida de video constante durante la captura de paquetes.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth} 
+        \includesvg[width=\textwidth]{images/resultados_generales/s2_red_1_info.svg}
+        \centering
+        \caption{Red 1}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth} 
+        \includesvg[width=\textwidth]{images/resultados_generales/s2_red_2_info.svg}
+        \centering
+        \caption{Red 2}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}  
+        \centering
+        \includesvg[width=\textwidth]{images/resultados_generales/s2_red_3_info.svg}
+        \caption{Red 3}
+    \end{subfigure}
+    \caption{Cantidad de información por cada símbolo en cada muestra.}
+    \label{fig: informacion de los simbolos de s2}
+\end{figure}
+
+\textbf{¿Ha encontrado paquetes ARP no esperados? ¿Se puede determinar para que sirven?}
+
+Nos encontramos con unos pocos paquetes ARP cuya dirección \texttt{IP} origen era 0.0.0.0, que resultó ser un valor sin uso específico, que algunos dispositivos de las redes 2 y 3 utilizaban cuando aún no tenían asignada una dirección \texttt{IP}. En nuestro caso la utilizaban para pedir que se les asigne una dirección válida pero hay dispositivos que permiten continuar trabajando con esta dirección en caso de que no reciban respuesta al pedido.
+
+\vspace{4mm}
+
+\textbf{¿Existe una correspondencia entre lo que se conoce de la red y los nodos distinguidos detectados por la herramienta?}
+
+La descripción de las condiciones de cada muestra se condice con las observaciones realizadas. La cantidad de dispositivos indicada es igual o cercana a la cantidad de símbolos que vimos en cada muestra de la fuente $S_{2}$ y la diferencia en el volumen de paquetes entre cada uno de ellos es la esperada.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth} 
+        \includesvg[width=\textwidth]{images/resultados_generales/s2_red_1_hosts.svg}
+        \centering
+        \caption{Red 1}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth} 
+        \includesvg[width=\textwidth]{images/resultados_generales/s2_red_2_hosts.svg}
+        \centering
+        \caption{Red 2}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}  
+        \centering
+        \includesvg[width=\textwidth]{images/resultados_generales/s2_red_3_hosts.svg}
+        \caption{Red 3}
+    \end{subfigure}
+    \caption{Aparición de cada host en cada muestra.}
+    \label{fig: porcentaje de aparcion s2}
+\end{figure}
+
+
+
+
+
+
+%\textbf{¿Hay evidencia parcial que sugiera que algún nodo funciona de forma anómala y/o no esperada?}%
+
+
